@@ -1,0 +1,37 @@
+<div class="quiz">
+    <script>
+        (() => {
+            const chars = "abcdefghijklmnopqrstuvwxyz";
+            let id = "";
+            for(let i=0; i<10; i++) {
+                id += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            document.write(`<div id=\"${id}\"></div>`);
+            const container = document.querySelector(`#${id}`);
+            const questions = `{{ trim .Inner "\r\n" }}`.split("\r\n\r\n");
+            questions.forEach((element, index) => {
+                const elements = element.split("\r\n");
+                container.innerHTML += `<p>${elements[0]}</p>`;
+                for(let i=1; i<elements.length; i++) {
+                    const answer = elements[i].replace("[ ]", `<input type="checkbox\" data-solution=\"false\">`)
+                                            .replace("[X]", `<input type="checkbox\" data-solution=\"true\">`)
+                                            .replace("( )", `<input type="radio" name="${id + index}" data-solution=\"false\">`)
+                                            .replace("(X)", `<input type="radio" name="${id + index}" data-solution=\"true\">`);
+                    container.innerHTML += `<label>${answer}</label><br>`;
+                }
+            });
+            container.innerHTML += `<p><button>Check</button></p>`;
+            const button = container.querySelector("button");
+            button.addEventListener('click', () => {
+                container.querySelectorAll("input").forEach(element => {
+                    if((element.checked && element.dataset.solution === 'true') || (!element.checked && element.dataset.solution === 'false')) {
+                        element.parentElement.style.color = 'green';
+                    }
+                    else {
+                        element.parentElement.style.color = 'red';
+                    }
+                });
+            });
+        })();
+    </script>
+</div>

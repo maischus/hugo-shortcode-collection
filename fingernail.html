@@ -1,0 +1,8 @@
+<figure>
+{{$svg := .Get 0}}
+{{$title := .Get 1}}
+{{$color := .Get 2}}
+{{$content := $svg | readFile }}
+{{ replace $content "#ff7870" $color | safeHTML }}
+<figcaption>{{ $title }}</figcaption>
+</figure>
